@@ -1,3 +1,14 @@
+.editorBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.editorItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
 .editorTitle {
   padding-right: 10px;
 }

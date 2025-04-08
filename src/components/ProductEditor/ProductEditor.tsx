@@ -22,7 +22,9 @@ const ProductEditor: React.FC = () => {
 
     setModel((prevModel) => ({
       paramValues: prevModel.paramValues.map((paramValue) =>
-        paramValue.paramId === Number(id) ? { ...paramValue, value } : paramValue
+        paramValue.paramId === Number(id)
+          ? { ...paramValue, value }
+          : paramValue
       ),
     }));
   };
@@ -38,20 +40,18 @@ const ProductEditor: React.FC = () => {
 
   return (
     <div>
-      <form>
+      <form className='editorBlock'>
         {params.map((param) => {
-          const paramValue = model.paramValues.find(
-            (value) => value.paramId === param.id
-          )?.value || '';
+          const paramValue =
+            model.paramValues.find((value) => value.paramId === param.id)
+              ?.value || '';
 
           return (
-            <div key={param.id}>
-              <label className="editorTitle">
-                {param.name}
-              </label>
+            <div className='editorItem' key={param.id}>
+              <label className='editorTitle'>{param.name}</label>
               <input
-                className="editorInput"
-                type="text"
+                className='editorInput'
+                type='text'
                 id={param.id.toString()}
                 name={param.name}
                 value={paramValue}
