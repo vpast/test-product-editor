@@ -1,8 +1,13 @@
-export type Param = {
+export interface Param {
+  id: number;
   name: string;
-  label: string;
-};
+}
 
-export type Model = {
-  [key: string]: string;
-};
+export interface ParamValue {
+  paramId: number;
+  value: string;
+}
+
+export interface Model {
+  paramValues: ParamValue[];
+}

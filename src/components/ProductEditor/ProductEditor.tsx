@@ -3,28 +3,32 @@ import { Param, Model } from './types';
 import './ProductEditor.scss';
 
 const params: Param[] = [
-  { name: 'title', label: 'Name' },
-  { name: 'description', label: 'Description' },
+  { id: 1, name: 'Title' },
+  { id: 2, name: 'Description' },
 ];
 
 const initialModel: Model = {
-  title: 'Cup',
-  description: 'Fill me with tea!',
+  paramValues: [
+    { paramId: 1, value: 'Cup' },
+    { paramId: 2, value: 'Fill me with tea!' },
+  ],
 };
 
 const ProductEditor: React.FC = () => {
   const [model, setModel] = useState<Model>(initialModel);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+    const { id, value } = e.target;
+
     setModel((prevModel) => ({
-      ...prevModel,
-      [name]: value,
+      paramValues: prevModel.paramValues.map((paramValue) =>
+        paramValue.paramId === Number(id) ? { ...paramValue, value } : paramValue
+      ),
     }));
   };
 
   const getModel = () => {
-    if (!model.title || !model.description) {
+    if (model.paramValues.some((paramValue) => !paramValue.value)) {
       window.alert('Please, fill all fields');
       return null;
     }
@@ -35,19 +39,27 @@ const ProductEditor: React.FC = () => {
   return (
     <div>
       <form>
-        {params.map((param) => (
-          <div key={param.name}>
-            <label className='editorTitle' htmlFor={param.name}>{param.label}</label>
-            <input
-              className='editorInput'
-              type='text'
-              id={param.name}
-              name={param.name}
-              value={model[param.name] || ''}
-              onChange={handleChange}
-            />
-          </div>
-        ))}
+        {params.map((param) => {
+          const paramValue = model.paramValues.find(
+            (value) => value.paramId === param.id
+          )?.value || '';
+
+          return (
+            <div key={param.id}>
+              <label className="editorTitle">
+                {param.name}
+              </label>
+              <input
+                className="editorInput"
+                type="text"
+                id={param.id.toString()}
+                name={param.name}
+                value={paramValue}
+                onChange={handleChange}
+              />
+            </div>
+          );
+        })}
       </form>
       <button onClick={() => console.log(getModel())}>Get model</button>
     </div>
